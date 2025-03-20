@@ -1,0 +1,109 @@
+---
+description: Ensure security best practices are followed
+globs: "*.py"
+alwaysApply: true
+---
+
+# Security Rules
+
+## Overview
+This rule ensures that the application follows security best practices and implements necessary security measures.
+
+## Requirements
+
+### 1. Input Validation
+- Validate all user input
+- Use schema validation for request data
+- Sanitize input before processing
+- Implement proper type checking
+- Handle edge cases and malformed input
+
+### 2. Authentication & Authorization
+- Implement proper authentication
+- Use secure session management
+- Implement role-based access control
+- Protect sensitive endpoints
+- Use secure password hashing
+
+### 3. Data Protection
+- Use HTTPS for all communications
+- Implement proper CORS policies
+- Protect sensitive data in transit
+- Implement rate limiting
+- Use secure headers
+
+### 4. Error Handling
+- Don't expose sensitive information in errors
+- Implement proper logging
+- Handle exceptions gracefully
+- Use custom error messages
+- Implement proper status codes
+
+### 5. Security Headers
+- Set X-Content-Type-Options
+- Set X-Frame-Options
+- Set X-XSS-Protection
+- Set Content-Security-Policy
+- Set Strict-Transport-Security
+
+## Example
+
+```python
+from flask import Flask, request
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+from flask_talisman import Talisman
+
+def create_app():
+    app = Flask(__name__)
+    
+    # Security headers
+    Talisman(app, 
+        content_security_policy={
+            'default-src': "'self'",
+            'script-src': "'self'",
+            'style-src': "'self'",
+            'img-src': "'self' data:",
+        }
+    )
+    
+    # Rate limiting
+    limiter = Limiter(
+        app=app,
+        key_func=get_remote_address,
+        default_limits=["100 per minute"]
+    )
+    
+    # Input validation
+    @app.route('/api/characters', methods=['GET'])
+    @limiter.limit("100 per minute")
+    def get_characters():
+        try:
+            first_name = request.args.get('first_name', type=str)
+            last_name = request.args.get('last_name', type=str)
+            
+            if first_name and len(first_name) > 100:
+                raise ValueError("First name too long")
+                
+            if last_name and len(last_name) > 100:
+                raise ValueError("Last name too long")
+                
+            # Process request...
+            
+        except ValueError as e:
+            return jsonify({
+                "error": "Invalid input",
+                "message": str(e)
+            }), 400
+            
+    return app
+```
+
+## Validation
+- Run security scanning tools
+- Check for common vulnerabilities
+- Verify security headers
+- Test rate limiting
+- Validate input sanitization
+- Check error handling
+- Verify logging implementation 

@@ -1,0 +1,123 @@
+---
+description: Ensure proper error handling
+globs: "*.py"
+alwaysApply: true
+---
+
+# Error Handling Standards
+
+- Use custom exception classes for application-specific errors
+- Implement proper HTTP status codes
+- Log all errors with appropriate context
+- Handle edge cases explicitly
+- Provide meaningful error messages to users
+- Use try-except blocks appropriately
+- Clean up resources in finally blocks
+- Validate input data before processing
+- Handle database connection errors gracefully
+- Implement retry mechanisms for transient failures
+- Use proper error hierarchies
+- Document error handling strategies 
+
+# Error Handling Rules
+
+## Overview
+This rule ensures consistent and proper error handling across the application, with clear error messages and appropriate status codes.
+
+## Requirements
+
+### 1. Custom Exceptions
+- Create custom exception classes
+- Use meaningful error messages
+- Include appropriate status codes
+- Group related exceptions
+- Document exception hierarchy
+
+### 2. Error Responses
+- Use consistent error response format
+- Include error type
+- Include error message
+- Include status code
+- Include request ID when applicable
+
+### 3. Error Handling
+- Handle all exceptions
+- Use appropriate status codes
+- Log errors properly
+- Don't expose internal details
+- Provide helpful error messages
+
+### 4. Validation Errors
+- Validate input data
+- Return clear validation errors
+- Use appropriate status codes
+- Include field-specific errors
+- Provide correction suggestions
+
+### 5. Logging
+- Log all errors
+- Include context information
+- Use appropriate log levels
+- Don't log sensitive data
+- Include request ID
+
+## Example
+
+```python
+from typing import Dict, Any
+from flask import jsonify
+
+class APIError(Exception):
+    """Base class for API errors."""
+    
+    def __init__(self, message: str, status_code: int = 500):
+        self.message = message
+        self.status_code = status_code
+        super().__init__(message)
+        
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert error to dictionary format."""
+        return {
+            "error": self.__class__.__name__,
+            "message": self.message,
+            "status_code": self.status_code
+        }
+
+class CharacterNotFoundError(APIError):
+    """Raised when a character is not found."""
+    
+    def __init__(self, character_id: int):
+        message = f"Character with ID {character_id} not found"
+        super().__init__(message, status_code=404)
+
+def register_error_handlers(app):
+    """Register error handlers for the application."""
+    
+    @app.errorhandler(APIError)
+    def handle_api_error(error):
+        """Handle API errors."""
+        response = jsonify(error.to_dict())
+        response.status_code = error.status_code
+        return response
+        
+    @app.errorhandler(ValidationError)
+    def handle_validation_error(error):
+        """Handle validation errors."""
+        response = jsonify({
+            "error": "ValidationError",
+            "message": str(error),
+            "status_code": 400,
+            "errors": error.errors
+        })
+        response.status_code = 400
+        return response
+```
+
+## Validation
+- Test error scenarios
+- Verify error messages
+- Check status codes
+- Validate error response format
+- Test error logging
+- Verify error handlers
+- Check error documentation 

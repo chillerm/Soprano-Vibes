@@ -1,0 +1,103 @@
+---
+description: Maintain consistent code style and quality
+globs: "*.py"
+alwaysApply: true
+---
+
+# Code Style Rules
+
+## Overview
+This rule ensures consistent code style across the project, following Python best practices and PEP 8 guidelines.
+
+## Requirements
+
+### 1. General Style
+- Use 4 spaces for indentation
+- Maximum line length of 88 characters (Black formatter default)
+- Use meaningful variable and function names
+- Follow snake_case for functions and variables
+- Use PascalCase for class names
+- Use UPPER_CASE for constants
+
+### 2. Imports
+- Group imports in the following order:
+  1. Standard library imports
+  2. Third-party imports
+  3. Local application imports
+- Use absolute imports
+- One import per line
+- Remove unused imports
+
+### 3. Functions
+- Maximum of 20 lines per function
+- Use type hints for parameters and return values
+- Include docstrings for all functions
+- Keep functions focused and single-purpose
+- Use meaningful parameter names
+
+### 4. Classes
+- Use type hints for class attributes
+- Include docstrings for all classes
+- Keep classes focused and cohesive
+- Use inheritance appropriately
+- Follow the Single Responsibility Principle
+
+### 5. Comments
+- Use comments to explain complex logic
+- Keep comments up to date
+- Use docstrings for public APIs
+- Avoid obvious comments
+- Use TODO comments for future improvements
+
+## Example
+
+```python
+from typing import List, Optional
+from flask import Response
+
+from .models import Character
+from .utils.errors import CharacterNotFoundError
+
+class CharacterService:
+    """Service for managing character-related operations."""
+    
+    def get_character(self, character_id: int) -> Character:
+        """Retrieve a character by ID.
+        
+        Args:
+            character_id: The ID of the character to retrieve
+            
+        Returns:
+            Character: The requested character
+            
+        Raises:
+            CharacterNotFoundError: If character is not found
+        """
+        character = self._find_character(character_id)
+        if not character:
+            raise CharacterNotFoundError(character_id)
+        return character
+        
+    def search_characters(
+        self,
+        first_name: Optional[str] = None,
+        last_name: Optional[str] = None
+    ) -> List[Character]:
+        """Search characters by name.
+        
+        Args:
+            first_name: Optional first name to search for
+            last_name: Optional last name to search for
+            
+        Returns:
+            List[Character]: List of matching characters
+        """
+        return self._search_characters(first_name, last_name)
+```
+
+## Validation
+- Run Black formatter
+- Run isort for import sorting
+- Run mypy for type checking
+- Run flake8 for style checking
+- Check docstring coverage 

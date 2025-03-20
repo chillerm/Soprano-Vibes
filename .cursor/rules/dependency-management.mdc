@@ -1,0 +1,99 @@
+---
+description: Ensure proper dependency management
+globs: "pyproject.toml,poetry.lock"
+alwaysApply: true
+---
+
+# Dependency Management Rules
+
+## Overview
+This rule ensures proper management of project dependencies, including version control, security updates, and dependency organization.
+
+## Requirements
+
+### 1. Dependency Specification
+- Use Poetry for dependency management
+- Specify exact versions for direct dependencies
+- Use version ranges for transitive dependencies
+- Document dependency purposes
+- Keep dependencies up to date
+
+### 2. Security
+- Regularly update dependencies
+- Check for security vulnerabilities
+- Use secure versions of packages
+- Monitor dependency advisories
+- Run security scans
+
+### 3. Organization
+- Group dependencies by purpose
+- Separate development dependencies
+- Use appropriate dependency categories
+- Document dependency requirements
+- Keep dependency tree clean
+
+### 4. Version Control
+- Lock dependency versions
+- Use semantic versioning
+- Document version constraints
+- Handle version conflicts
+- Maintain compatibility
+
+### 5. Documentation
+- Document dependency setup
+- Include installation instructions
+- Document version requirements
+- Explain dependency choices
+- Keep documentation updated
+
+## Example
+
+```toml
+[tool.poetry]
+name = "sopranos-api"
+version = "0.1.0"
+description = "API for The Sopranos characters"
+authors = ["Your Name <your.email@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+flask = "2.3.3"
+flask-limiter = "3.5.0"
+flask-talisman = "1.1.0"
+marshmallow = "3.20.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "7.4.2"
+pytest-cov = "4.1.0"
+black = "23.7.0"
+isort = "5.12.0"
+mypy = "1.5.1"
+flake8 = "6.1.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+```
+
+## Validation
+- Run dependency updates
+- Check for security vulnerabilities
+- Verify dependency versions
+- Test dependency installation
+- Validate dependency tree
+- Check for conflicts
+- Verify documentation
+
+# Dependency Management Standards
+
+- Use Poetry for dependency management
+- Keep dependencies up to date
+- Pin all dependency versions
+- Document dependency purposes in pyproject.toml
+- Use compatible version ranges
+- Run `poetry update` regularly
+- Keep poetry.lock in version control
+- Use virtual environments
+- Document Python version requirements
+- Include development dependencies separately
+- Use group dependencies for optional features 

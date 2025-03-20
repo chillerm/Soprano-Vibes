@@ -1,3 +1,6 @@
+from typing import List, Optional
+from ..utils.errors import CharacterNotFoundError
+
 class Character:
     def __init__(self, id: int, first_name: str, last_name: str):
         self.id = id
@@ -25,10 +28,13 @@ characters = [
     Character(10, "Livia", "Soprano")
 ]
 
-def get_character_by_id(character_id: int) -> Character | None:
-    return next((char for char in characters if char.id == character_id), None)
+def get_character_by_id(character_id: int) -> Optional[Character]:
+    character = next((char for char in characters if char.id == character_id), None)
+    if character is None:
+        raise CharacterNotFoundError(character_id)
+    return character
 
-def search_characters(first_name: str | None = None, last_name: str | None = None) -> list[Character]:
+def search_characters(first_name: Optional[str] = None, last_name: Optional[str] = None) -> List[Character]:
     filtered_characters = characters
     
     if first_name:

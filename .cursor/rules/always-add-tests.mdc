@@ -1,0 +1,11 @@
+---
+description: 
+globs: *.py
+alwaysApply: false
+---
+
+# Always add and run tests
+
+- Always use pytest for testing
+- Always add tests when adding, removing or modifying functionality
+- Always run tests after a change set is complete
