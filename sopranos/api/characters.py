@@ -12,7 +12,7 @@ def get_characters():
         return jsonify([char.to_dict() for char in search_characters(first_name, last_name)])
     return jsonify([char.to_dict() for char in characters])
 
-@characters_bp.route('/<int:character_id>')
+@characters_bp.route('/<int:character_id>/')
 def get_character(character_id):
     character = get_character_by_id(character_id)
     if character is None:
