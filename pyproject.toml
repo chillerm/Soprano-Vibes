@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "A Flask web application"
 authors = ["Your Name <your.email@example.com>"]
 readme = "README.md"
-packages = [{include = "app.py"}]
+packages = [{include = "sopranos"}]
 
 [tool.poetry.dependencies]
 python = "^3.12"
