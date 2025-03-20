@@ -2,7 +2,7 @@
 name = "sopranos"
 version = "0.1.0"
 description = "A Flask web application"
-authors = ["Your Name <your.email@example.com>"]
+authors = ["Carl Hillermann"]
 readme = "README.md"
 packages = [{include = "sopranos"}]
 
